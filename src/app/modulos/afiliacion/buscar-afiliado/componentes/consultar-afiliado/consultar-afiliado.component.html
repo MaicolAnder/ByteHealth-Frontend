@@ -1,0 +1,66 @@
+<div>
+<form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+  <div class="row">
+    <div class="col-12">
+      <h3>Buscar afiliado</h3>
+    </div>
+    <div class="col-xs-12 col-md-4 col-xl-4">
+      <nz-input-group [nzSuffix]="suffixIconSearch">
+        <input type="text" nz-input formControlName="documento" placeholder="Número de documento" />
+      </nz-input-group>
+    </div>
+    <div class="col-xs-12 col-md-4 col-xl-4">
+      <nz-select nzShowSearch nzAllowClear formControlName="tipo_documento" nzPlaceHolder="Tipo de documento">
+        <nz-option *ngFor="let item of listadoTipDoc" nzLabel="{{item.Descripcion_PerTipId}}" nzValue="{{item.Id_PerTipId}}"></nz-option>
+      </nz-select>
+    </div>
+    <div class="col-xs-12 col-md-4 col-xl-4">
+      <button type="submit" class="btn btn-primary"  [disabled]="!validateForm.valid">Buscar afiliado</button>&nbsp;
+      <button type="button" class="btn btn-danger" (click)="borrarBusqueda()">Limpiar</button>
+    </div>
+  </div>
+</form>
+</div>
+<div *ngIf="registroEncontrado">
+  <hr>
+  <div class="alert alert-warning d-flex align-items-center" role="alert">
+    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:">
+      <use xlink:href="#exclamation-triangle-fill" />
+    </svg>
+    <div>
+      El registro no esta en la base de datos, ¿desea inciar el proceso de afiliación?
+      <a [routerLink]="['/afiliacion/registrar-afiliado']" routerLinkActive="router-link-active"  class="alert-link">...Ir a afiliación</a>
+    </div>
+  </div>
+</div>
+<div *ngIf="listadoAfiliados">
+  <hr>
+  <table class="table table-condensed table-striped">
+    <thead>
+      <th>Primer nombre</th>
+      <th>Segundo nombre</th>
+      <th>Primer Apellido</th>
+      <th>Segundo Apellido</th>
+      <th>Identificación</th>
+      <th>Fecha Nacimiento</th>
+      <th>Fecha Afiliación</th>
+      <th></th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of listadoAfiliados">
+        <td>{{item.Nombre1_Per}}</td>
+        <td>{{item.Nombre2_Per}}</td>
+        <td>{{item.Apeliido1_Per}}</td>
+        <td>{{item.Apellido2_Per}}</td>
+        <td>{{item.Identificacion_Per}}</td>
+        <td>{{item.FechaNacimiento_Per}}</td>
+        <td>{{item.FechaAfiliacion_Afi}}</td>
+        <td><button type="button" class="btn btn-info"> + </button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #suffixIconSearch>
+  <i nz-icon nzType="search"></i>
+</ng-template>
